@@ -10,6 +10,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 import os
+import random
 
 app = Flask(__name__)
 
@@ -42,7 +43,7 @@ def callback():
 def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text="ニャー！"))
+        TextSendMessage(text=random.cohice(["ニャー！", "ニャーニャー！"])))
 
 
 if __name__ == "__main__":
