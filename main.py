@@ -43,7 +43,7 @@ def callback():
 def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=create_response(message)))
+        TextSendMessage(text=create_response(event.message.txt)))
 
 def create_response(message):
     return random.choice(["ニャー！", "ニャーニャー！", "ねむいニャ", "ねたニャ", "おなかがすいたニャ", "あそんでニャ", "チュール！ チュール！"])
