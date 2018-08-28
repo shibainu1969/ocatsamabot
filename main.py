@@ -116,6 +116,11 @@ def eval_sentence(message):
 def get_keyword(message):
     access_token = get_access_token()
     json_str = { "document":message }
+    request_header = {
+      "Content-Type":"application/json",
+      "charset":"UTF-8",
+      "Authorization":"Bearer " + access_token
+    }
     url = Request(KEYWORD_URL, dumps(json_str).encode(), request_header)
     response = loads(urlopen(url).read())
     if (len(response["result"]) == 0):
