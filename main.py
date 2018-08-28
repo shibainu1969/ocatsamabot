@@ -90,7 +90,7 @@ def interrogative_response(message):
     keyword = get_keyword(message)
     if (keyword == "名前"):
         return "なまえはまだないニャ"
-    elif (keyword == ""):
+    elif (not keyword):
         return random.choice(DEFAULT_ANSWERS)
     else:
         return keyword + "ってなにニャ？"
