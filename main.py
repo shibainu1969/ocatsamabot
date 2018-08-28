@@ -59,15 +59,16 @@ ACCESS_TOKEN_PUBLISH_URL = "https://api.ce-cotoha.com/v1/oauth/accesstokens"
 SENTENCE_TYPE_URL = "https://api.ce-cotoha.com/v1/api/dev/nlp/sentence_type"
 NE_URL = "https://api.ce-cotoha.com/v1/api/dev/nlp/ne"
 KEYWORD_URL = "https://api.ce-cotoha.com/v1/api/dev/nlp/keyword"
+DEFAULT_ANSWERS = ["ニャー！", "ニャーニャー！", "ねむいニャ", "ねたニャ", "おなかがすいたニャ", "あそんでニャ", "チュール！ チュール！"]
 
 def create_response(message):
     modality, dialog_act = eval_sentence(message)
     if (modality == "declarative"):
         return declarative_response(dialog_act)
     elif (modality == "interrogative"):
-        return interrogative_response()
+        return interrogative_response(message)
     elif (modality == "imperative"):
-        return imperative_response()
+        return imperative_response(message)
 
 def declarative_response(dialog_act):
     if (dialog_act == "greeting"):
@@ -83,12 +84,18 @@ def declarative_response(dialog_act):
         else:
             return "なんかおかしいニャ"
     else:
-        return random.choice(["ニャー！", "ニャーニャー！", "ねむいニャ", "ねたニャ", "おなかがすいたニャ", "あそんでニャ", "チュール！ チュール！"])
+        return random.choice(DEFAULT_ANSWERS)
 
-def interrogative_response():
-    return "interrogative response"
+def interrogative_response(message):
+    keyword = get_keyword(message)
+    if (keyword == "名前"):
+        return "なまえはまだないニャ"
+    elif (keyword == ""):
+        return random.choice(DEFAULT_ANSWERS)
+    else:
+        return keyword + "ってなにニャ？"
 
-def imperative_response():
+def imperative_response(message):
     return "imperative response"
 
 def eval_sentence(message):
@@ -106,6 +113,15 @@ def eval_sentence(message):
     response = loads(urlopen(url).read())
     return response["result"]["modality"], response["result"]["dialog_act"][0]
 
+def get_keyword(message):
+    access_token = get_access_token()
+    json_str = { "document":message }
+    url = Request(KEYWORD_URL, dumps(json_str).encode(), request_header)
+    response = loads(urlopen(url).read())
+    if (len(response["result"]) == 0):
+        return ""
+    else:
+        response["result"][0]["form"]
 
 def get_access_token():
     json_str = {
