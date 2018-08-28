@@ -61,8 +61,16 @@ NE_URL = "https://api.ce-cotoha.com/v1/api/dev/nlp/ne"
 KEYWORD_URL = "https://api.ce-cotoha.com/v1/api/dev/nlp/keyword"
 
 def create_response(message):
-    sentence_type = eval_sentence(message)
-    if (sentence_type == "greeting"):
+    modality, dialog_act = eval_sentence(message)
+    if (modality == "declarative"):
+        return declarative_response(dialog_act)
+    elif (modality == "interrogative"):
+        return interrogative_response()
+    elif (modality == "imperative"):
+        return imperative_response()
+
+def declarative_response(dialog_act):
+    if (dialog_act == "greeting"):
         hour = datetime.now(JST).hour
         if (0 <= hour < 5):
             return "こんばんニャ"
@@ -77,6 +85,12 @@ def create_response(message):
     else:
         return random.choice(["ニャー！", "ニャーニャー！", "ねむいニャ", "ねたニャ", "おなかがすいたニャ", "あそんでニャ", "チュール！ チュール！"])
 
+def interrogative_response():
+    return "interrogative response"
+
+def imperative_response():
+    return "imperative response"
+
 def eval_sentence(message):
     access_token = get_access_token()
     json_str = {
@@ -90,10 +104,8 @@ def eval_sentence(message):
     }
     url = Request(SENTENCE_TYPE_URL, dumps(json_str).encode(), request_header)
     response = loads(urlopen(url).read())
-    if (response["result"]["dialog_act"][0] == "greeting"):
-        return "greeting"
-    else:
-        return "default"
+    return response["result"]["modality"], response["result"]["dialog_act"][0]
+
 
 def get_access_token():
     json_str = {
