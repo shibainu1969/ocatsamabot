@@ -16,9 +16,11 @@ from urllib.request import urlopen
 from urllib.request import Request
 from json import dumps
 from json import loads
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 app = Flask(__name__)
+
+JST = timezone(timedelta(hours=+9), 'JST')
 
 #環境変数取得
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["CHANNEL_ACCESS_TOKEN"]
@@ -61,7 +63,7 @@ KEYWORD_URL = "https://api.ce-cotoha.com/v1/api/dev/nlp/keyword"
 def create_response(message):
     sentence_type = eval_sentence(message)
     if (sentence_type == "greeting"):
-        hour = datetime.now().hour
+        hour = datetime.now(JST).hour
         if (0 <= hour < 5):
             return "こんばんニャ"
         elif (5 <= hour < 11):
