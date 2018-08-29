@@ -91,7 +91,6 @@ def interrogative_response(message):
     if (keyword == "名前"):
         return "なまえはまだないニャ"
     elif (not keyword):
-        print(keyword)
         return random.choice(DEFAULT_ANSWERS)
     else:
         return keyword + "ってなにニャ？"
@@ -125,8 +124,6 @@ def get_keyword(message):
     url = Request(KEYWORD_URL, dumps(json_str).encode(), request_header)
     response = loads(urlopen(url).read())
 
-    print(response["result"][0]["form"])
-    
     if (len(response["result"]) == 0):
         return "キーワードなし"
     else:
