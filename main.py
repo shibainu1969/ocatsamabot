@@ -123,6 +123,7 @@ def get_keyword(message):
     }
     url = Request(KEYWORD_URL, dumps(json_str).encode(), request_header)
     response = loads(urlopen(url).read())
+    print(response["result"][0]
     if (len(response["result"]) == 0):
         return "キーワードなし"
     else:
