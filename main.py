@@ -125,7 +125,7 @@ def get_keyword(message):
     response = loads(urlopen(url).read())
 
     if (len(response["result"]) == 0):
-        return "キーワードなし"
+        return ""
     else:
         return response["result"][0]["form"]
 
