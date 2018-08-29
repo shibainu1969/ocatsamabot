@@ -96,7 +96,11 @@ def interrogative_response(message):
         return keyword + "ってなにニャ？"
 
 def imperative_response(message):
-    return "imperative response"
+    keyword = get_keyword(message)
+    if (not keyword):
+        return rondom.choice(DEFAULT_ANSWERS)
+    else:
+        return keyword + "ってなにニャ？"
 
 def eval_sentence(message):
     access_token = get_access_token()
