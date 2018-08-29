@@ -98,7 +98,7 @@ def interrogative_response(message):
 def imperative_response(message):
     keyword = get_keyword(message)
     if (not keyword):
-        return rondom.choice(DEFAULT_ANSWERS)
+        return random.choice(DEFAULT_ANSWERS)
     else:
         return keyword + "ってなにニャ？"
 
