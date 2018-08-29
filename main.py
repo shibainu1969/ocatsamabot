@@ -130,7 +130,7 @@ def get_keyword(message):
     if (len(response["result"]) == 0):
         return "キーワードなし"
     else:
-        response["result"][0]["form"]
+        return response["result"][0]["form"]
 
 def get_access_token():
     json_str = {
