@@ -24,7 +24,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, BeaconEvent,
 )
 
 app = Flask(__name__)
@@ -68,6 +68,13 @@ def message_text(event):
         TextSendMessage(text=event.message.text)
     )
 
+@handler.add(BeaconEvent)
+def handle_beacon(event):
+    print(event)
+    line_bot_api.reply_message(
+        event.reply_token,[
+            TextSendMessage(text='beaconを検出しました. event.type={}, hwid={}, device_message(hex string)={}'.format(event.beacon.type, event.beacon.hwid, event.beacon.dm)),
+        ])
 
 if __name__ == "__main__":
 #    app.run()
